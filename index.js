@@ -36,15 +36,31 @@
  // post request
 
 const express=require("express")
+const cors=require("cors")
 var bodyParser = require('body-parser')
 const app=express()
 const port=7878
 
 
+var corsOptions={
+    origin:"http://localhost:3000"
+}
+
+app.use(cors(corsOptions))
+
 // parse application/json
 app.use(bodyParser.json())
 
 // http methhods -> GET, POST, PUT, DELETE
+
+const db=require("./app/model")
+
+db.mongoose
+.connect(db.url,{
+    useNewUrlParser:true
+}).then(()=>console.log("Connected to DB..."))
+
+require("./app/routes/user.routes")(app)
 
 app.get("/test",(req,res)=>{
     res.send("Hello Express JS")
@@ -84,3 +100,25 @@ app.get("/fetchData/:fName",(req,res)=>{
 app.listen(port,()=>{
     console.log("Connected to Server...");
 })
+
+
+// Mongoose -> Driver  -> Act as bridge between your application and the database
+// Cors -> Cross Origin ->  Valid source or origin 
+
+// React Application -> localhost:3000  --> abc.com   ->  Server Application
+
+
+// A ->
+// B ->                Server Application
+// C ->
+
+// D ->
+
+// config -> database configuration -> database address and port with database name
+// model  -> Mapping objects to save to the database. (Whatever json data received will be 
+              // mapped with the schema created)
+              // Data validation with the schema defined 
+              // User/Schema  -> consists of the fields with the type
+// routes -> It will consist of actual URL paths.  
+// controller -> logic of storing or retrieving the data from DB.            
+
