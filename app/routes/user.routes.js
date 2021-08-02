@@ -6,5 +6,9 @@ module.exports=app=>{
 
     router.post("/saveUser",users.create)
 
+    router.get("/getAllUsers",users.findAll)
+
+    router.get("/getUserById/:id",users.findOne)
+
     app.use("/api",router)
 }
